@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>الأرض والنظام الشمسي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0b1030;--violet:#2a1458;--panel:#161b4a;--gold:#ffc83d;--sky:#4fc3f7;--green:#3ddc97;--soft:#ff9f7a;--text:#eef1ff;--mute:#aab2e0;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;color:var(--text);line-height:1.8;
+background:
+radial-gradient(1.5px 1.5px at 20px 30px,#fff,transparent),radial-gradient(1px 1px at 90px 80px,#cfd8ff,transparent),radial-gradient(1.5px 1.5px at 150px 20px,var(--gold),transparent),
+radial-gradient(ellipse at 20% 0%,var(--violet),transparent 60%),var(--navy);background-size:180px 120px,130px 150px,220px 170px,100% 100%,100% 100%}
+.app{max-width:560px;margin:0 auto;padding:20px 16px 40px}
+.screen{display:none}.screen.on{display:block}
+h1{font-size:2.1rem;font-weight:900;color:var(--gold);text-align:center;margin:6px 0 2px;text-shadow:0 0 24px rgba(255,200,61,.35)}
+.sub{text-align:center;color:var(--mute);margin:0 0 6px}
+.hero{display:block;margin:0 auto;width:min(86vw,320px);height:auto}
+.card{background:linear-gradient(160deg,var(--panel),#1b1650);border:1px solid #2f3a8a;border-radius:20px;padding:16px 18px;margin:14px 0}
+.card h2{margin:0 0 6px;font-size:1.15rem;color:var(--sky)}
+.card ul{margin:0;padding:0;list-style:none}
+.card li{padding:4px 22px 4px 0;position:relative}
+.card li::before{content:"";position:absolute;right:0;top:15px;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.btn{display:block;width:100%;font:inherit;font-weight:700;font-size:1.1rem;border:0;border-radius:16px;padding:12px 18px;cursor:pointer;color:#1a1200;background:linear-gradient(180deg,#ffd75e,var(--gold));box-shadow:0 4px 0 #b88a10}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #b88a10}
+.btn.ghost{background:transparent;color:var(--text);border:2px solid #3a47a8;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;color:var(--mute);font-weight:700}
+.bar{height:10px;background:#1c2160;border-radius:9px;margin:8px 0 14px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--sky),var(--green));border-radius:9px;transition:width .4s}
+.q{font-size:1.25rem;font-weight:700;margin:6px 0 14px}
+.tag{display:inline-block;background:#2a1458;color:var(--gold);border-radius:12px;padding:0 12px;font-size:.9rem;margin-bottom:4px}
+.opt{display:block;width:100%;text-align:right;font:inherit;font-size:1.05rem;color:var(--text);background:var(--panel);border:2px solid #2f3a8a;border-radius:14px;padding:10px 14px;margin:9px 0;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--sky)}
+.opt.ok{background:#12503f;border-color:var(--green)}
+.opt.bad{background:#5a2a2a;border-color:var(--soft)}
+.row{display:flex;align-items:center;gap:8px;background:var(--panel);border:2px solid #2f3a8a;border-radius:14px;padding:8px 12px;margin:8px 0}
+.row b{flex:1}
+.pick{font:inherit;border:2px solid #3a47a8;background:transparent;color:var(--text);border-radius:10px;padding:2px 12px;cursor:pointer}
+.pick.sel{background:var(--sky);color:#06203a;border-color:var(--sky)}
+.pick.ok{background:var(--green);color:#052a1c;border-color:var(--green)}
+.pick.bad{background:var(--soft);color:#3a1304;border-color:var(--soft)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;min-height:46px}
+.chip{font:inherit;font-weight:700;background:var(--violet);color:var(--text);border:2px solid #5b3bb0;border-radius:24px;padding:4px 16px;cursor:pointer}
+.slots{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:8px;border:2px dashed #3a47a8;border-radius:14px}
+.slots .chip{background:var(--gold);color:#1a1200;border-color:var(--gold)}
+.slots.ok .chip{background:var(--green);border-color:var(--green)}
+.slots.bad .chip{background:var(--soft);border-color:var(--soft)}
+.fb{display:none;border-radius:16px;padding:12px 16px;margin:14px 0 10px;border:2px solid}
+.fb.show{display:block;animation:pop .3s}
+.fb.good{background:#0f3f33;border-color:var(--green)}
+.fb.miss{background:#3d2335;border-color:var(--soft)}
+.fb h3{margin:0;font-size:1.15rem}.fb.good h3{color:var(--green)}.fb.miss h3{color:var(--soft)}
+.fb p{margin:2px 0 0}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+.big{font-size:3rem;font-weight:900;color:var(--gold);text-align:center;margin:0;line-height:1.2}
+.res{text-align:center}
+.stars{font-size:2.2rem;letter-spacing:6px;color:var(--gold)}
+.o{animation:spin linear infinite;transform-origin:180px 180px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.o,.fb.show{animation:none}}
+.inp{display:block;width:100%;font:inherit;font-size:1.05rem;color:var(--text);background:#10143e;border:2px solid #3a47a8;border-radius:12px;padding:8px 12px;margin:6px 0 10px}
+.inp:focus{outline:3px solid var(--sky);outline-offset:1px}
+.card label{font-weight:700;color:var(--gold)}
+.err{color:var(--soft);min-height:1.6em;margin:0 0 6px;font-weight:700}
+.cert{margin:12px 0;padding:10px;border-radius:22px;background:linear-gradient(150deg,#0b1030,#2a1458);border:3px solid var(--gold);box-shadow:0 0 30px rgba(255,200,61,.2)}
+.cert-in{border:1.5px solid var(--gold);border-radius:14px;padding:16px 10px;text-align:center}
+.c-top{font-size:2rem;font-weight:900;color:var(--gold)}
+.cert p{margin:2px 0;color:var(--mute)}
+.c-name{font-size:1.9rem;font-weight:900;color:#fff;margin:4px 0;word-break:break-word}
+.c-cls{color:var(--sky);font-weight:700}
+.c-stats{display:flex;gap:8px;margin:12px 0 6px}
+.c-stats div{flex:1;background:var(--panel);border:1.5px solid #3a47a8;border-radius:12px;padding:6px 2px}
+.c-stats small{display:block;color:var(--mute)}
+.c-stats b{font-size:1.25rem;color:var(--gold)}
+.cert .stars{font-size:1.7rem}
+.acts{display:grid;gap:10px;margin-top:10px}
+#imgbox img{width:100%;border-radius:12px;margin-top:10px}
+@media print{body{background:#fff!important}.app{max-width:none;padding:0}.screen{display:none!important}#s-end{display:block!important}#s-end h1,#s-end .card,#s-end .acts,#imgbox{display:none!important}.cert{-webkit-print-color-adjust:exact;print-color-adjust:exact;break-inside:avoid;margin:0}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<section class="screen on" id="s-start">
+<svg class="hero" viewBox="0 0 360 360" aria-hidden="true">
+<defs><radialGradient id="sun"><stop offset="0" stop-color="#fff3b0"/><stop offset=".6" stop-color="#ffc83d"/><stop offset="1" stop-color="#ff9a1f"/></radialGradient>
+<radialGradient id="earth" cx=".35" cy=".35"><stop offset="0" stop-color="#8fe3ff"/><stop offset=".6" stop-color="#2d8fd6"/><stop offset="1" stop-color="#1e8f5a"/></radialGradient></defs>
+<g fill="none" stroke="#5a66c8" stroke-opacity=".45">
+<circle cx="180" cy="180" r="30"/><circle cx="180" cy="180" r="44"/><circle cx="180" cy="180" r="58"/><circle cx="180" cy="180" r="72"/>
+<circle cx="180" cy="180" r="88" stroke="#c9b27a" stroke-opacity=".9" stroke-width="5" stroke-dasharray="1 5" stroke-linecap="round"/>
+<circle cx="180" cy="180" r="108"/><circle cx="180" cy="180" r="130"/><circle cx="180" cy="180" r="150"/><circle cx="180" cy="180" r="170"/></g>
+<circle cx="180" cy="180" r="38" fill="#ffc83d" opacity=".12"/>
+<circle cx="180" cy="180" r="18" fill="url(#sun)"/>
+<g class="o" style="animation-duration:14s"><circle cx="210" cy="180" r="3" fill="#b0b0b8"/></g>
+<g class="o" style="animation-duration:20s;animation-delay:-6s"><circle cx="224" cy="180" r="4.5" fill="#e8a35c"/></g>
+<g class="o" style="animation-duration:28s;animation-delay:-3s"><circle cx="238" cy="180" r="6" fill="url(#earth)"/>
+<g style="transform-origin:238px 180px;animation:spin 4s linear infinite"><circle cx="247" cy="180" r="1.8" fill="#e6e6ee"/></g></g>
+<g class="o" style="animation-duration:36s;animation-delay:-20s"><circle cx="252" cy="180" r="4" fill="#d9573a"/></g>
+<g class="o" style="animation-duration:60s;animation-delay:-10s"><circle cx="288" cy="180" r="11" fill="#d8a76a"/><path d="M280 178q8 3 16 0" stroke="#a9733c" fill="none"/></g>
+<g class="o" style="animation-duration:80s;animation-delay:-40s"><circle cx="310" cy="180" r="8" fill="#e6c98e"/><ellipse cx="310" cy="180" rx="14" ry="3.5" fill="none" stroke="#f3dfae" stroke-width="1.5"/></g>
+<g class="o" style="animation-duration:100s;animation-delay:-70s"><circle cx="330" cy="180" r="6" fill="#7fe0e8"/></g>
+<g class="o" style="animation-duration:120s;animation-delay:-30s"><circle cx="350" cy="180" r="6" fill="#4a6cf0"/></g>
+</svg>
+<h1>الأرض والنظام الشمسي</h1>
+<p class="sub">الصف الأول الإعدادي · نشاط تفاعلي من 10 أسئلة</p>
+<div class="card"><h2>أهداف النشاط</h2><ul>
+<li>التعرف على مكونات النظام الشمسي.</li>
+<li>التمييز بين الكواكب الداخلية والكواكب الخارجية.</li>
+<li>فهم خصائص كوكب الأرض والعوامل التي تجعل الحياة ممكنة عليها.</li></ul></div>
+<div class="card"><h2>بيانات الطالب</h2>
+<label for="f-name">اسم الطالب</label><input class="inp" id="f-name" maxlength="40" autocomplete="off" placeholder="اكتب اسمك الكامل">
+<label for="f-cls">الفصل</label><input class="inp" id="f-cls" maxlength="20" autocomplete="off" placeholder="مثال: 1/3"></div>
+<p class="err" id="err" role="alert"></p>
+<button class="btn" id="to-help">كيف أبدأ؟</button>
+</section>
+
+<section class="screen" id="s-help">
+<h1>تعليمات النشاط</h1>
+<div class="card"><ul>
+<li>ستجيب عن 10 أسئلة متنوعة: اختيار من متعدد، صح أم خطأ، تصنيف، وترتيب.</li>
+<li>اضغط على إجابتك. في التصنيف اختر لكل كوكب مكانه ثم اضغط «تحقق». في الترتيب اضغط الكواكب بالترتيب ثم «تحقق».</li>
+<li>بعد كل إجابة يظهر لك سبب الصواب أو الخطأ مع المعلومة الصحيحة.</li>
+<li>اضغط «التالي» للانتقال إلى السؤال التالي. تأكد من تشغيل صوت جهازك.</li></ul></div>
+<button class="btn" id="go">ابدأ النشاط</button>
+</section>
+
+<section class="screen" id="s-quiz">
+<div class="top"><span id="num"></span><span id="score"></span></div>
+<div class="bar"><i id="prog"></i></div>
+<span class="tag" id="kind"></span>
+<div class="q" id="q"></div>
+<div id="body"></div>
+<div class="fb" id="fb" role="status" aria-live="polite"><h3 id="fbh"></h3><p id="fbp"></p></div>
+<button class="btn" id="chk" style="display:none">تحقق</button>
+<button class="btn" id="next" style="display:none">التالي</button>
+</section>
+
+<section class="screen res" id="s-end">
+<h1>النتيجة الختامية</h1>
+<div class="cert" id="cert"><div class="cert-in">
+<div class="c-top" id="ctitle">شهادة تقدير</div>
+<p>تُمنح هذه الشهادة للطالب / الطالبة</p>
+<div class="c-name" id="cname"></div><div class="c-cls" id="ccls"></div>
+<p>تقديرًا لإتمامه نشاط «الأرض والنظام الشمسي» للصف الأول الإعدادي</p>
+<div class="stars" id="stars"></div>
+<div class="c-stats"><div><small>الدرجة</small><b id="final"></b></div><div><small>النسبة المئوية</small><b id="cpct"></b></div><div><small>التقدير</small><b id="cgrade"></b></div></div>
+<p id="cdate"></p>
+</div></div>
+<div class="card"><p id="msg" style="margin:0"></p></div>
+<div class="acts"><button class="btn" id="print">طباعة الشهادة</button><button class="btn" id="saveimg">حفظ الشهادة كصورة</button><button class="btn ghost" id="again">إعادة المحاولة</button></div>
+<div id="imgbox"></div>
+</section>
+
+</div>
+<script>
+const IN='كوكب داخلي',OUT='كوكب خارجي';
+const Q=[
+{t:'mc',k:'اختيار من متعدد',q:'ما اسم النجم الذي يقع في مركز النظام الشمسي؟',o:['القمر','الشمس','المريخ','المشتري'],a:1,
+ ok:'الشمس نجم يعطي الضوء والحرارة، وتدور حوله كل الكواكب بفعل جاذبيته.',
+ no:'القمر تابع للأرض، والمريخ والمشتري كوكبان. الشمس وحدها هي النجم في مركز النظام الشمسي.'},
+{t:'mc',k:'صح أم خطأ',q:'الأرض هي أكبر كواكب النظام الشمسي.',o:['صح','خطأ'],a:1,
+ ok:'العبارة خاطئة؛ أكبر الكواكب هو المشتري، والأرض أكبر الكواكب الصخرية فقط.',
+ no:'العبارة خاطئة؛ المشتري هو أكبر كواكب النظام الشمسي، ويتسع داخله أكثر من ألف كرة بحجم الأرض.'},
+{t:'sort',k:'تصنيف',q:'صنّف كل كوكب: داخلي أم خارجي؟',items:[['عطارد',IN],['المشتري',OUT],['الزهرة',IN],['نبتون',OUT]],
+ ok:'الكواكب الداخلية (عطارد، الزهرة، الأرض، المريخ) صخرية وتقع بين الشمس وحزام الكويكبات، والخارجية (المشتري، زحل، أورانوس، نبتون) غازية عملاقة تقع بعده.',
+ no:'الكواكب الداخلية هي عطارد والزهرة والأرض والمريخ، وهي صخرية وأقرب للشمس. أما المشتري وزحل وأورانوس ونبتون فهي الخارجية وتقع بعد حزام الكويكبات.'},
+{t:'order',k:'ترتيب',q:'رتّب الكواكب من الأقرب إلى الشمس إلى الأبعد.',items:['عطارد','الزهرة','الأرض','المريخ'],
+ ok:'الترتيب: عطارد ثم الزهرة ثم الأرض ثم المريخ. الأرض هي الكوكب الثالث بعدًا عن الشمس.',
+ no:'الترتيب الصحيح: عطارد، الزهرة، الأرض، المريخ. عطارد الأقرب إلى الشمس، والأرض الكوكب الثالث.'},
+{t:'mc',k:'إكمال عبارة',q:'يقع حزام الكويكبات بين مداري المريخ و ........',o:['الأرض','المشتري','زحل','نبتون'],a:1,
+ ok:'الحزام يفصل بين الكواكب الداخلية الصخرية والكواكب الخارجية الغازية، وهو يقع بين المريخ والمشتري.',
+ no:'الحزام يقع بين المريخ والمشتري، وهو فاصل بين الكواكب الداخلية والخارجية.'},
+{t:'mc',k:'اختيار من متعدد',q:'ما أهم عامل يجعل الحياة ممكنة على الأرض؟',o:['كبر حجمها','وجود حلقات حولها','بعدها المناسب عن الشمس، فيوجد الماء سائلًا','قربها الشديد من الشمس'],a:2,
+ ok:'البعد المناسب عن الشمس يجعل الحرارة معتدلة، فيبقى الماء سائلًا، والماء أساس الحياة.',
+ no:'السبب هو البعد المناسب عن الشمس؛ فلا تكون الأرض شديدة الحرارة ولا شديدة البرودة، ويبقى الماء سائلًا.'},
+{t:'mc',k:'صح أم خطأ',q:'القمر يضيء بضوء خاص به مثل الشمس.',o:['صح','خطأ'],a:1,
+ ok:'القمر جسم معتم، ونراه لأنه يعكس ضوء الشمس.',
+ no:'العبارة خاطئة؛ القمر لا يصدر ضوءًا، بل يعكس ضوء الشمس الساقط عليه.'},
+{t:'mc',k:'اختيار من متعدد',q:'أي الكواكب التالية يحيط به نظام حلقات واضح؟',o:['عطارد','زحل','الزهرة','المريخ'],a:1,
+ ok:'زحل كوكب غازي عملاق تحيط به حلقات من الجليد والصخور.',
+ no:'الكوكب ذو الحلقات الواضحة هو زحل. أما عطارد والزهرة والمريخ فهي كواكب صخرية بلا حلقات واضحة.'},
+{t:'mc',k:'إكمال عبارة',q:'يحمي الغلاف الجوي للأرض الكائنات الحية من ........',o:['الأشعة الضارة والنيازك الصغيرة','الجاذبية','تعاقب الليل والنهار','المد والجزر'],a:0,
+ ok:'الغلاف الجوي يمتص جزءًا من الأشعة الضارة ويحرق النيازك الصغيرة، ويوفر الأكسجين للتنفس.',
+ no:'الغلاف الجوي يحمي من الأشعة الضارة والنيازك الصغيرة، ويوفر الأكسجين الضروري للحياة.'},
+{t:'mc',k:'إكمال عبارة',q:'تغطي المياه نحو ........ من مساحة سطح الأرض.',o:['25%','50%','71%','95%'],a:2,
+ ok:'المياه تغطي نحو 71% من سطح الأرض، ولذلك تسمى «الكوكب الأزرق».',
+ no:'المياه تغطي نحو 71% من سطح الأرض، وهي أكثر من اليابسة، ولهذا تبدو الأرض زرقاء من الفضاء.'}
+];
+const $=id=>document.getElementById(id);
+let i=0,score=0,done=false,ac;
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
+function tone(f,t,d,type,v){const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime+t;o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(v,n+.02);g.gain.exponentialRampToValueAtTime(.001,n+d);o.connect(g);g.connect(ac.destination);o.start(n);o.stop(n+d+.05)}
+function snd(ok){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume();
+ if(ok)[523,659,784,1047].forEach((f,k)=>tone(f,k*.09,.28,'sine',.16));
+ else{tone(330,0,.25,'triangle',.1);tone(262,.18,.35,'triangle',.1)}}catch(e){}}
+function shuffle(a){a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a}
+function finish(ok){
+ if(done)return;done=true;snd(ok);if(ok)score++;
+ const q=Q[i];$('score').textContent='النقاط: '+score;
+ $('fb').className='fb show '+(ok?'good':'miss');
+ $('fbh').textContent=ok?'إجابة صحيحة، أحسنت!':'إجابة غير صحيحة، لا بأس!';
+ $('fbp').textContent=ok?q.ok:q.no;
+ $('chk').style.display='none';
+ $('next').style.display='block';$('next').textContent=i===Q.length-1?'عرض النتيجة':'التالي';
+ $('fb').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function render(){
+ const q=Q[i];done=false;
+ $('num').textContent='السؤال '+(i+1)+' من '+Q.length;$('score').textContent='النقاط: '+score;
+ $('prog').style.width=(i/Q.length*100)+'%';
+ $('kind').textContent=q.k;$('q').textContent=q.q;
+ $('fb').className='fb';$('chk').style.display='none';$('next').style.display='none';
+ const b=$('body');b.innerHTML='';
+ if(q.t==='mc'){
+  q.o.forEach((txt,k)=>{const e=document.createElement('button');e.className='opt';e.textContent=txt;
+   e.onclick=()=>{if(done)return;const ok=k===q.a;b.querySelectorAll('.opt').forEach((x,j)=>{x.disabled=true;if(j===q.a)x.classList.add('ok')});if(!ok)e.classList.add('bad');finish(ok)};b.appendChild(e)});
+ }else if(q.t==='sort'){
+  const ch={};$('chk').style.display='block';$('chk').disabled=true;
+  q.items.forEach(([n,ans])=>{const r=document.createElement('div');r.className='row';r.innerHTML='<b>'+n+'</b>';
+   [IN,OUT].forEach(v=>{const p=document.createElement('button');p.className='pick';p.textContent=v;
+    p.onclick=()=>{if(done)return;ch[n]=v;r.querySelectorAll('.pick').forEach(x=>x.classList.toggle('sel',x===p));$('chk').disabled=Object.keys(ch).length<q.items.length};r.appendChild(p)});b.appendChild(r)});
+  $('chk').onclick=()=>{let all=true;b.querySelectorAll('.row').forEach((r,k)=>{const [n,ans]=q.items[k];r.querySelectorAll('.pick').forEach(p=>{p.disabled=true;p.classList.remove('sel');if(p.textContent===ans)p.classList.add('ok');else if(p.textContent===ch[n])p.classList.add('bad')});if(ch[n]!==ans)all=false});finish(all)};
+ }else{
+  const pool=document.createElement('div'),slots=document.createElement('div'),got=[];
+  pool.className='chips';slots.className='slots';$('chk').style.display='block';$('chk').disabled=true;
+  const lab=document.createElement('p');lab.style.cssText='margin:4px 0;color:var(--mute)';lab.textContent='ترتيبك (من الأقرب إلى الأبعد):';
+  shuffle(q.items).forEach(n=>{const c=document.createElement('button');c.className='chip';c.textContent=n;
+   c.onclick=()=>{if(done)return;c.style.display='none';got.push(n);const s=document.createElement('span');s.className='chip';s.textContent=(got.length)+'. '+n;slots.appendChild(s);$('chk').disabled=got.length<q.items.length};pool.appendChild(c)});
+  b.append(pool,lab,slots);
+  const rs=document.createElement('button');rs.className='btn ghost';rs.style.margin='10px 0';rs.textContent='ابدأ الترتيب من جديد';
+  rs.onclick=()=>{if(done)return;got.length=0;slots.innerHTML='';pool.querySelectorAll('.chip').forEach(c=>c.style.display='');$('chk').disabled=true};b.appendChild(rs);
+  $('chk').onclick=()=>{const ok=got.every((n,k)=>n===q.items[k]);slots.classList.add(ok?'ok':'bad');rs.style.display='none';finish(ok)};
+ }
+}
+let sName='',sCls='';
+$('to-help').onclick=()=>{sName=$('f-name').value.trim();sCls=$('f-cls').value.trim();if(sName.length<2){$('err').textContent='اكتب اسمك أولًا للمتابعة.';$('f-name').focus();return}$('err').textContent='';show('s-help')};
+$('go').onclick=()=>{try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume()}catch(e){}i=0;score=0;show('s-quiz');render()};
+$('next').onclick=()=>{i++;if(i<Q.length){render();window.scrollTo(0,0)}else end()};
+function end(){
+ $('prog').style.width='100%';show('s-end');$('final').textContent=score+' / '+Q.length;fillCert();
+ const n=score>=9?3:score>=6?2:score>=3?1:0;$('stars').textContent='★'.repeat(n)+'☆'.repeat(3-n);
+ $('msg').textContent=score>=9?'ممتاز! أنت رائد فضاء حقيقي، وأتقنت دروس النظام الشمسي.':score>=6?'جيد جدًا! راجع الأسئلة التي أخطأت فيها لتصبح خبيرًا في الفضاء.':'بداية جيدة! أعد قراءة الدرس وحاول مرة أخرى، وستتحسن نتيجتك.';
+ snd(score>=6);
+}
+function pct(){return Math.round(score/Q.length*100)}
+function grade(p){return p>=90?'ممتاز':p>=80?'جيد جدًا':p>=65?'جيد':p>=50?'مقبول':'يحتاج إلى مراجعة'}
+function ctitle(){return pct()>=50?'شهادة تقدير':'تقرير نتيجة النشاط'}
+function today(){return new Date().toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'})}
+function fillCert(){const p=pct();$('ctitle').textContent=ctitle();$('cname').textContent=sName;$('ccls').textContent=sCls?'الفصل: '+sCls:'';$('cpct').textContent=p+'%';$('cgrade').textContent=grade(p);$('cdate').textContent='التاريخ: '+today();$('imgbox').innerHTML=''}
+$('print').onclick=()=>{try{window.print()}catch(e){$('imgbox').textContent='تعذرت الطباعة هنا. احفظ الشهادة كصورة ثم اطبعها.'}};
+$('saveimg').onclick=async()=>{
+ const W=1200,H=850,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+ try{await document.fonts.load('900 40px Cairo')}catch(e){}
+ const F='Cairo,Tahoma,Arial,sans-serif',p=pct();
+ const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#0b1030');g.addColorStop(1,'#2a1458');x.fillStyle=g;x.fillRect(0,0,W,H);
+ x.fillStyle='#cfd8ff';for(let k=0;k<70;k++){x.globalAlpha=.3+(k%4)*.15;x.fillRect((k*397)%W,(k*211)%H,2,2)}x.globalAlpha=1;
+ x.strokeStyle='#ffc83d';x.lineWidth=8;x.strokeRect(30,30,W-60,H-60);x.lineWidth=2;x.strokeRect(50,50,W-100,H-100);
+ x.direction='rtl';x.textAlign='center';
+ const T=(s,y,sz,col,w,cx)=>{x.font=(w||700)+' '+sz+'px '+F;x.fillStyle=col;x.fillText(s,cx||W/2,y)};
+ T(ctitle(),160,72,'#ffc83d',900);
+ T('تُمنح هذه الشهادة للطالب / الطالبة',235,32,'#aab2e0');
+ T(sName,325,66,'#ffffff',900);
+ if(sCls)T('الفصل: '+sCls,385,34,'#4fc3f7');
+ T('تقديرًا لإتمامه نشاط «الأرض والنظام الشمسي» للصف الأول الإعدادي',460,32,'#eef1ff');
+ const n=p>=90?3:p>=65?2:p>=50?1:0;T('★'.repeat(n)+'☆'.repeat(3-n),540,56,'#ffc83d');
+ [['الدرجة',score+' / '+Q.length,940],['النسبة المئوية',p+'%',600],['التقدير',grade(p),260]].forEach(([l,v,cx])=>{
+  x.fillStyle='#161b4a';x.strokeStyle='#3a47a8';x.lineWidth=3;x.beginPath();x.roundRect(cx-150,590,300,150,20);x.fill();x.stroke();
+  T(l,640,28,'#aab2e0',700,cx);T(v,708,46,'#ffc83d',900,cx)});
+ T('التاريخ: '+today(),795,26,'#aab2e0');
+ const blob=await new Promise(r=>c.toBlob(r,'image/png'));
+ let d=null;try{d=await claude.use('downloads')}catch(e){}
+ if(d){try{await d.save({filename:'شهادة-النظام-الشمسي.png',data:blob});return}catch(e){if(e&&e.code==='declined')return}}
+ const u=URL.createObjectURL(blob);$('imgbox').innerHTML='<p>اضغط مطولًا على الصورة لحفظها في جهازك.</p><img alt="الشهادة" src="'+u+'">';
+};
+$('again').onclick=()=>show('s-start');
+</script>
+</body>
+</html>
